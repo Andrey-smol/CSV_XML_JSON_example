@@ -1,6 +1,5 @@
 package ru.netology;
 
-import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,28 +10,25 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class CSVhamcrestTests<T> {
 
-    private final static String rootDirectory = "src/test/java/ru/netology/resources/";
     private final static String pathFileForRead = "testCSVFile.csv";
 
     CSV_<Employee> csv_;
 
     @BeforeEach
-    public void init(){
+    public void init() {
         csv_ = new CSV_<>(Employee.class);
     }
 
     @Test
-    public void testParseCSV(){
+    public void testParseCSV() {
         // given:
         String[] actual = {"id", "firstName", "lastName", "country", "age"};
-        String pathFile = rootDirectory + pathFileForRead;
+        String pathFile = CommonResources.rootDirectory + pathFileForRead;
         List<Employee> expected = List.of(new Employee(1, "John", "Smith", "USA", 25),
-                                          new Employee(2, "Ivan", "Petrov", "RU", 23));
+                new Employee(2, "Ivan", "Petrov", "RU", 23));
         String str = expected.get(0).toString();
-
         // when:
         List<Employee> result = csv_.parseCSV(actual, pathFile);
-
         // than:
         assertThat(result, Matchers.notNullValue());
         assertThat(str, Matchers.hasToString(result.get(0).toString()));

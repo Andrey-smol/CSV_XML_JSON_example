@@ -15,8 +15,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class JSONhamcrestTests<T> {
 
     JSON_<Employee> json_;
-
-    private final static String rootDirectory = "src/test/java/ru/netology/resources/";
     private final static String pathFileToWrite = "testJsonFileForWrite.json";
     private final static String pathFileForRead = "testJsonFile.json";
 
@@ -44,41 +42,37 @@ public class JSONhamcrestTests<T> {
             "  }\n" +
             "]";
 
+    List<Employee> list = Arrays.asList(new Employee(1, "Koly", "Petrov", "RU", 25),
+            new Employee(2, "Wasy", "Sidorov", "RU", 20),
+            new Employee(3, "Misha", "Mishin", "RU", 35));
 
     private Path workingDir;
 
     @BeforeAll
-    public static void beforeAll(){
-        File file = new File(rootDirectory + pathFileToWrite);
-        if(file.exists()){
+    public static void beforeAll() {
+        File file = new File(CommonResources.rootDirectory + pathFileToWrite);
+        if (file.exists()) {
             Assertions.assertTrue(file.delete());
         }
     }
 
     @BeforeEach
-    public void init(){
+    public void init() {
         json_ = new JSON_<>(Employee.class);
-        this.workingDir = Path.of("", rootDirectory);
+        this.workingDir = Path.of("", CommonResources.rootDirectory);
     }
 
     @AfterEach
-    public void cleanup(){
+    public void cleanup() {
         json_ = null;
     }
-
 
     @Test
     public void testListToJson() {
         // given:
         String expected = jsonListEmployee;
-
-        List<Employee> list = Arrays.asList(new Employee(1,"Koly", "Petrov", "RU", 25),
-                new Employee(2,"Wasy", "Sidorov", "RU", 20),
-                new Employee(3,"Misha", "Mishin", "RU", 35));
-
         // when:
         String result = json_.listToJson(list);
-
         // then:
         assertThat(result, Matchers.notNullValue());
         assertThat(result, Matchers.not(result.isEmpty()));
@@ -86,16 +80,12 @@ public class JSONhamcrestTests<T> {
     }
 
     @Test
-    public void testJsonToList(){
+    public void testJsonToList() {
         // given:
         String str = jsonListEmployee;
-        List<Employee> expected = Arrays.asList(new Employee(1,"Koly", "Petrov", "RU", 25),
-                new Employee(2,"Wasy", "Sidorov", "RU", 20),
-                new Employee(3,"Misha", "Mishin", "RU", 35));
-
+        List<Employee> expected = list;
         // when:
         List<Employee> result = json_.jsonToList(str);
-
         // then:
         assertThat(result, Matchers.notNullValue());
         assertThat(result, Matchers.not(result.isEmpty()));
@@ -103,15 +93,13 @@ public class JSONhamcrestTests<T> {
     }
 
     @Test
-    public void testReadStringFromFile(){
+    public void testReadStringFromFile() {
         // given:
         String expected = "[  {    \"id\": 1,    \"firstName\": \"Koly\",    \"lastName\": \"Petrov\",    \"country\": \"RU\",    \"age\": 25  },  " +
                 "{    \"id\": 2,    \"firstName\": \"Wasy\",    \"lastName\": \"Sidorov\",    \"country\": \"RU\",    \"age\": 20  },  " +
                 "{    \"id\": 3,    \"firstName\": \"Misha\",    \"lastName\": \"Mishin\",    \"country\": \"RU\",    \"age\": 35  }]";
-
         // when:
-        String result = json_.readString(rootDirectory + pathFileForRead);
-
+        String result = json_.readString(CommonResources.rootDirectory + pathFileForRead);
         // then:
         assertThat(result, Matchers.notNullValue());
         assertThat(expected, Matchers.equalTo(result));
@@ -123,14 +111,11 @@ public class JSONhamcrestTests<T> {
         String actual = jsonListEmployee;
 
         String expected = actual;
-        //String expected = jsonListEmployee.replace('1', '3');
 
         Path file = this.workingDir.resolve(pathFileToWrite);
-        File result = new File(rootDirectory + pathFileToWrite);
-
+        File result = new File(CommonResources.rootDirectory + pathFileToWrite);
         // when:
-        json_.writeJsonToFile(actual, rootDirectory + pathFileToWrite);
-
+        json_.writeJsonToFile(actual, CommonResources.rootDirectory + pathFileToWrite);
         // then:
         assertThat(result, Matchers.notNullValue());
         assertThat("", result.exists());
