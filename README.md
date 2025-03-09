@@ -144,3 +144,88 @@ List<Employee> list = jsonToList(json);
 ```
 
 Далее, содержимое полученного списка выводится в консоль.
+
+# Задача "Использование JUnit"
+## Описание
+В этом задании научимся писать тесты с использованием библиотеки для модульного тестирования JUnit
+
+Выберите одно или нескольколько ваших любимых домашних заданий, которые вы уже сделали
+Вспомните, как вы тестировали его работоспособность - наверняка просто запускали и вводили какие-то данные вручную?
+
+А теперь добавьте модульные тесты, которые проверят работоспособность автоматически.
+Тестов должно быть не менее трёх.
+
+## Реализация
+Подключите зависимость к любимой системе сборки
+Maven:
+```
+<dependency>
+   <groupId>org.junit.jupiter</groupId>
+   <artifactId>junit-jupiter-engine</artifactId>
+   <version>5.1.0</version>
+   <scope>test</scope>
+</dependency>
+```
+Или Gradle:
+```
+dependencies {
+  // .. другие зависимости
+  testImplementation('org.junit.jupiter:junit-jupiter:5.6.2')
+}
+
+test {
+  useJUnitPlatform()
+}
+```
+Создайте класс для тестов в папке src/test/java (можете также создать подпапки в соответствии с package'ом класса, который вы будете тестировать)
+
+В классе создайте методы вида
+```java
+@org.junit.jupiter.api.Test
+public void testConcat_validArgument_success() {
+  // given:
+  ...
+
+  // when:
+  ...    
+
+  // then:
+    Assertions.***;
+}
+```
+где на месте ... размещаете код подготовки к тестированию, а затем вызова целевого метода
+а набрав Assertions. выберите подходящий метод из подсказок IntelliJ IDEA.
+Таких методов (ассертов) можете сделать несколько в одном тестирующем методе
+
+# Задача "JUnit + Hamcrest"
+## Описание
+Прочитайте про Hamcrest для JUnit
+
+Перепишите ваши тесты из первого задания в стиле Hamcrest
+
+## Реализация
+Подключите зависимость к любимой системе сборки
+Maven:
+```
+<dependency>
+    <groupId>org.hamcrest</groupId>
+    <artifactId>hamcrest-all</artifactId>
+    <version>1.3</version>
+</dependency>
+```
+Или Gradle:
+```
+      testImplementation 'org.hamcrest:hamcrest-all:1.3'
+```
+Пример теста из презентации:
+```java
+@Test
+public void contains() {
+   List<String> list = List.of("hello", "netology", "world");
+
+   assertThat(list, hasItems("hello", "netology"));
+}
+```
+Здесь assertThat - статический импорт из org.hamcrest.MatcherAssert
+А hasItems можете найти в org.hamcrest.Matchers - там же вы можете искать другие матчеры.
+Проще набрать Matchers., выбрать нужный из всплывающей подсказки, а потом уже добавить статическиий импорт средствами IntelliJ
